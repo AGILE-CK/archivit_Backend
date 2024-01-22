@@ -1,0 +1,47 @@
+version: "3.0"
+
+services:
+
+  db:
+    image: mysql:8.0
+    container_name: agile-mysql
+    hostname: agile-mysql
+    deploy:
+      placement:
+        constraints:
+          - node.role = manager
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_ROOT_PASSWORD: agile
+      MYSQL_USER: agile
+      MYSQL_PASSWORD: agile
+
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h","localhost" ]
+    ports:
+      - "5535:3306"
+    restart: unless-stopped
+    volumes:
+      - agile-mysql_volume:/var/lib/mysql
+      - ./init-database.sql:/docker-entrypoint-initdb.d/init-database.sql
+#  app:
+#    build:
+#        context: ./
+#        dockerfile: Dockerfile
+#    volumes:
+#      - ./:/app
+#    image: agile_backend_image:latest
+#    container_name: agile-backend-api
+#    ports:
+#      - "8080:8080"
+#    hostname: agile-backend-api
+#    environment:
+#      DB_HOST: ${DB_HOST}
+#      DB_PORT: ${DB_PORT}
+#      DB_USERNAME: ${DB_USERNAME}
+#      DB_PASSWORD: ${DB_PASSWORD}
+#      DB_DATABASE: ${DB_DATABASE}
+#      PROFILE: ${PROFILE}
+
+volumes:
+  agile-mysql_volume:
