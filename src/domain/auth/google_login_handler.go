@@ -40,4 +40,5 @@ func GoogleLoginHandler(c *gin.Context) {
 	state := generateStateOauthCookie(c.Writer)
 	url := googleOauthConfig.AuthCodeURL(state)
 	c.Redirect(http.StatusTemporaryRedirect, url)
+
 }

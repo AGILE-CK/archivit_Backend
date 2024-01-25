@@ -46,5 +46,5 @@ func main() {
 	r.GET("/auth/google/login", auth.GoogleLoginHandler)
 	r.GET("/auth/google/callback", auth.GoogleAuthCallback)
 
-	r.Run(":8080")
+	r.Run(":" + port)
 }
