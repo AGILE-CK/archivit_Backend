@@ -7,7 +7,7 @@ env_variables:
   DB_PORT: 3306
   DB_USERNAME: agile
   DB_PASSWORD: agile
-  DB_DATABASE: agile_dev
+  DB_DATABASE: agile_database
   PORT: 8080
   PROFILE: develop
 
