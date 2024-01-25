@@ -17,6 +17,7 @@ import (
 func RequestPing(c *gin.Context) {
 
 	temp := os.Getenv("DB_HOST")
+
 	c.JSON(200, gin.H{
 		"message": temp,
 	})

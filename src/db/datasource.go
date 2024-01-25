@@ -42,7 +42,7 @@ func (ds *DataSource) GetDataSource() *gorm.DB {
 		if os.Getenv("PROFILE") == "" {
 			dataSourceInstance, err = gorm.Open("mysql", ds.Username+":"+ds.Password+"@tcp("+ds.Host+":"+ds.Port+")/"+ds.Database)
 		} else {
-			dataSourceInstance, err = gorm.Open("mysql", ds.Username+":"+ds.Password+"@unix(/cloudsql/"+ds.Host+")/"+ds.Database)
+			dataSourceInstance, err = gorm.Open("mysql", ds.Username+":"+ds.Password+"@unix(/cloudsql/"+ds.Host+")/"+ds.Database+"?parseTime=true")
 		}
 
 		if err != nil {

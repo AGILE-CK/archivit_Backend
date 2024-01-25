@@ -1,0 +1,31 @@
+info:
+  contact: {}
+  title: ARCHIVIT API
+paths:
+  /auth/google/login:
+    get:
+      consumes:
+      - application/json
+      description: google login handler
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: google login handler
+  /ping:
+    get:
+      consumes:
+      - application/json
+      description: do ping hello
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: pong
+          schema:
+            type: string
+      summary: ping example
+swagger: "2.0"
