@@ -22,19 +22,18 @@ func (ds *DataSource) GetDataSource() *gorm.DB {
 
 	once.Do(func() {
 
-		if os.Getenv("PROFILE") == "develop" {
-			ds.Host = os.Getenv("DB_HOST")
-			ds.Port = os.Getenv("DB_PORT")
-			ds.Username = os.Getenv("DB_USERNAME")
-			ds.Password = os.Getenv("DB_PASSWORD")
-			ds.Database = os.Getenv("DB_DATABASE")
-
-		} else {
+		if os.Getenv("PROFILE") == "" {
 			ds.Host = "localhost"
 			ds.Port = "5535"
 			ds.Username = "agile"
 			ds.Password = "agile"
 			ds.Database = "agile_database"
+		} else {
+			ds.Host = os.Getenv("DB_HOST")
+			ds.Port = os.Getenv("DB_PORT")
+			ds.Username = os.Getenv("DB_USERNAME")
+			ds.Password = os.Getenv("DB_PASSWORD")
+			ds.Database = os.Getenv("DB_DATABASE")
 		}
 
 		var err error
