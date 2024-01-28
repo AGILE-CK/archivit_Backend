@@ -16,7 +16,7 @@ var googleOauthConfig = oauth2.Config{
 	ClientSecret: "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",
 	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
 	Endpoint:     google.Endpoint,
-}
+} // todo: change redirect url & osenv
 
 func generateStateOauthCookie(w http.ResponseWriter) string {
 	expiration := time.Now().Add(1 * 24 * time.Hour)
