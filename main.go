@@ -4,6 +4,7 @@ import (
 	"archivit_Backend/docs"
 	"archivit_Backend/src/db"
 	"archivit_Backend/src/domain/auth"
+	"archivit_Backend/src/domain/auth/google"
 	"archivit_Backend/src/domain/ping"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -26,7 +27,7 @@ func main() {
 
 	dbConfig := db.DataSource{}
 
-	dataSource := dbConfig.GetDataSource()
+	dataSource := dbConfig.MakeDataSource()
 	defer dataSource.Close()
 	db.GormMigrate()
 
@@ -43,8 +44,11 @@ func main() {
 	setupSwagger(r)
 
 	r.GET("/ping", ping.RequestPing)
-	r.GET("/auth/google/login", auth.GoogleLoginHandler)
-	r.GET("/auth/google/callback", auth.GoogleAuthCallback)
+	r.GET("/auth/google/login", google.GoogleLoginHandler)
+	r.GET("/auth/google/callback", google.GoogleAuthCallback)
+
+	r.POST("/auth/signup", auth.RegisterHandler)
+	r.POST("/auth/login", auth.LoginHandler)
 
 	r.Run(":" + port)
 }
