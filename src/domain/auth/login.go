@@ -9,6 +9,18 @@ import (
 	"net/http"
 )
 
+// LoginHandler godoc
+// @title Login
+// @Summary login user
+// @Schemes
+// @Description login user
+// @Accept json
+// @Produce json
+// @Param email body string true "email"
+// @Param password body string true "password"
+// @Success 200 {string} string "User created successfully"
+// @Failure 400 {string} string "Invalid user data"
+// @Router /auth/login [post]
 func LoginHandler(c *gin.Context) {
 	var u entity.User
 

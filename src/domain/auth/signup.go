@@ -18,6 +18,18 @@ func checkPasswordForm(password string) bool {
 	return len(password) >= 8
 }
 
+// RegisterHandler godoc
+// @title Register
+// @Summary register user
+// @Schemes
+// @Description register user
+// @Accept json
+// @Produce json
+// @Param email body string true "email"
+// @Param password body string true "password"
+// @Success 200 {string} string "User created successfully"
+// @Failure 400 {string} string "Invalid user data"
+// @Router /auth/signup [post]
 func RegisterHandler(c *gin.Context) {
 	var u entity.User
 
