@@ -4,7 +4,9 @@ import (
 	"archivit_Backend/docs"
 	"archivit_Backend/src/db"
 	"archivit_Backend/src/domain/auth"
+	"archivit_Backend/src/domain/auth/google"
 	"archivit_Backend/src/domain/ping"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -22,11 +24,17 @@ func setupSwagger(r *gin.Engine) {
 }
 
 // @title ARCHIVIT API
+// @version latest
+// @Content-Type application/json
+// @description This is server for Archivit API.
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization: Bearer <token>
 func main() {
 
 	dbConfig := db.DataSource{}
 
-	dataSource := dbConfig.GetDataSource()
+	dataSource := dbConfig.MakeDataSource()
 	defer dataSource.Close()
 	db.GormMigrate()
 
@@ -37,14 +45,20 @@ func main() {
 	}
 	log.Printf("Listening on port %s", port)
 
-	r := gin.Default()
+	router := gin.Default()
+	router.Use(cors.Default())
 
 	docs.SwaggerInfo.BasePath = ""
-	setupSwagger(r)
+	setupSwagger(router)
 
-	r.GET("/ping", ping.RequestPing)
-	r.GET("/auth/google/login", auth.GoogleLoginHandler)
-	r.GET("/auth/google/callback", auth.GoogleAuthCallback)
+	router.Use(auth.TokenAuthMiddleware())
 
-	r.Run(":8080")
+	router.GET("/ping", ping.RequestPing)
+	router.GET("/auth/google/login", google.GoogleLoginHandler)
+	router.GET("/auth/google/callback", google.GoogleAuthCallback)
+
+	router.POST("/auth/signup", auth.RegisterHandler)
+	router.POST("/auth/login", auth.LoginHandler)
+
+	router.Run(":" + port)
 }

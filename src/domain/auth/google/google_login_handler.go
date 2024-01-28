@@ -1,4 +1,4 @@
-package auth
+package google
 
 import (
 	"crypto/rand"
@@ -16,7 +16,7 @@ var googleOauthConfig = oauth2.Config{
 	ClientSecret: "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",
 	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
 	Endpoint:     google.Endpoint,
-}
+} // todo: change redirect url & osenv
 
 func generateStateOauthCookie(w http.ResponseWriter) string {
 	expiration := time.Now().Add(1 * 24 * time.Hour)
@@ -40,4 +40,5 @@ func GoogleLoginHandler(c *gin.Context) {
 	state := generateStateOauthCookie(c.Writer)
 	url := googleOauthConfig.AuthCodeURL(state)
 	c.Redirect(http.StatusTemporaryRedirect, url)
+
 }
