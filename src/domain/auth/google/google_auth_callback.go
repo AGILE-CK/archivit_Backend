@@ -48,13 +48,6 @@ func GoogleAuthCallback(c *gin.Context) {
 
 	fmt.Fprint(c.Writer, string(data))
 
-	//{
-	//	"id": "103564838690673927306",
-	//	"email": "sungu0804@gmail.com",
-	//	"verified_email": true,
-	//	"picture": "https://lh3.googleusercontent.com/a-/ALV-UjUSFbSzf50TrMb6EYU-0w5h9cZw3xHWsReUaNXmGOLe=s96-c"
-	//}
-
 	var googleUser struct {
 		ID    string `json:"id"`
 		Email string `json:"email"`
