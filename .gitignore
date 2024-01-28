@@ -28,10 +28,8 @@ go.work
 # GoLand
 .idea/
 
-# Swagger
-docs.go
-docs
-
 # deploy at google cloud app engine
-app.yaml
-app-dev.yaml
+*.yaml
+
+# local env
+.env

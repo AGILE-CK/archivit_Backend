@@ -4,12 +4,22 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
 
-var secretKey = []byte("secret") // todo osenv
+var secretKey = []byte(os.Getenv("SECRET_KEY"))
+
+func InitSecretKey() {
+	secret := os.Getenv("SECRET_KEY")
+	if secret == "" {
+		log.Fatalln("SECRET_KEY is required")
+	}
+	secretKey = []byte(secret)
+}
 
 // array of strings
 var skipUrls = []string{

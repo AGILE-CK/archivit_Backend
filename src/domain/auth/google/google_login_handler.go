@@ -7,16 +7,28 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"net/http"
+	"os"
 	"time"
 )
 
-var googleOauthConfig = oauth2.Config{
-	RedirectURL:  "http://localhost:8080/auth/google/callback",
-	ClientID:     "584965141712-eku96vnto2vr7t4bk584kkf7q4mer4hn.apps.googleusercontent.com",
-	ClientSecret: "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",
-	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
-	Endpoint:     google.Endpoint,
-} // todo: change redirect url & osenv
+var googleOauthConfig *oauth2.Config
+
+func InitConfig() {
+
+	var redirectURL, clientID, clientSecret string
+
+	redirectURL = os.Getenv("GOOGLE_REDIRECT_URL")
+	clientID = os.Getenv("GOOGLE_CLIENT_ID")
+	clientSecret = os.Getenv("GOOGLE_CLIENT_SECRET")
+
+	googleOauthConfig = &oauth2.Config{
+		RedirectURL:  redirectURL,
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
+		Endpoint:     google.Endpoint,
+	}
+}
 
 func generateStateOauthCookie(w http.ResponseWriter) string {
 	expiration := time.Now().Add(1 * 24 * time.Hour)
@@ -40,5 +52,4 @@ func GoogleLoginHandler(c *gin.Context) {
 	state := generateStateOauthCookie(c.Writer)
 	url := googleOauthConfig.AuthCodeURL(state)
 	c.Redirect(http.StatusTemporaryRedirect, url)
-
 }

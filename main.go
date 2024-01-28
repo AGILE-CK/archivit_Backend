@@ -8,6 +8,7 @@ import (
 	"archivit_Backend/src/domain/ping"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"log"
@@ -31,6 +32,14 @@ func setupSwagger(r *gin.Engine) {
 // @in header
 // @name Authorization: Bearer <token>
 func main() {
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	google.InitConfig()
+	auth.InitSecretKey()
 
 	dbConfig := db.DataSource{}
 
