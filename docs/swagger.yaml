@@ -1,6 +1,8 @@
 info:
   contact: {}
+  description: This is server for Archivit API.
   title: ARCHIVIT API
+  version: latest
 paths:
   /auth/google/login:
     get:
@@ -15,6 +17,66 @@ paths:
           schema:
             type: string
       summary: google login handler
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: login user
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User created successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid user data
+          schema:
+            type: string
+      summary: login user
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: register user
+      parameters:
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User created successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid user data
+          schema:
+            type: string
+      summary: register user
   /ping:
     get:
       consumes:
@@ -27,5 +89,16 @@ paths:
           description: pong
           schema:
             type: string
+        "400":
+          description: bad request
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
       summary: ping example
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: 'Authorization: Bearer <token>'
+    type: apiKey
 swagger: "2.0"
