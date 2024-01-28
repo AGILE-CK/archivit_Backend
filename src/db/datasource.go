@@ -18,10 +18,9 @@ type DataSource struct {
 var dataSourceInstance *gorm.DB
 var once sync.Once
 
-func (ds *DataSource) GetDataSource() *gorm.DB {
+func (ds *DataSource) MakeDataSource() *gorm.DB {
 
 	once.Do(func() {
-
 		if os.Getenv("PROFILE") == "" {
 			ds.Host = "localhost"
 			ds.Port = "5535"
@@ -49,5 +48,9 @@ func (ds *DataSource) GetDataSource() *gorm.DB {
 		}
 	})
 
+	return dataSourceInstance
+}
+
+func GetDataSource() *gorm.DB {
 	return dataSourceInstance
 }
