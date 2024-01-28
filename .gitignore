@@ -30,6 +30,8 @@ go.work
 
 # deploy at google cloud app engine
 *.yaml
+app-dev.yaml
+
 
 # local env
 .env
