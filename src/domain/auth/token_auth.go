@@ -2,12 +2,22 @@ package auth
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"net/http"
+	"strings"
 	"time"
 )
 
-var secretKey = []byte("secret")
+var secretKey = []byte("secret") // todo osenv
+
+// array of strings
+var skipUrls = []string{
+	"/swagger/index.html",
+	"/swagger-ui/*any",
+	"/auth",
+	"/auth/google",
+}
 
 func CreateToken(email string) (string, error) {
 
@@ -44,24 +54,37 @@ func verifyToken(tokenString string) error {
 	return nil
 }
 
-func ProtectedHandler(w http.ResponseWriter, r *http.Request) bool {
-	w.Header().Set("Content-Type", "application/json")
-	tokenString := r.Header.Get("Authorization")
-	if tokenString == "" {
-		w.WriteHeader(http.StatusUnauthorized)
-		fmt.Fprint(w, "Missing authorization header")
-		return false
+func TokenAuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		tokenString := c.GetHeader("Authorization")
+
+		//if strings.HasPrefix(c.Request.URL.Path, "/swagger") || strings.HasPrefix(c.Request.URL.Path, "/swagger-ui") {
+		//	c.Next()
+		//	return
+		//}
+
+		for _, skipUrl := range skipUrls {
+			if strings.HasPrefix(c.Request.URL.Path, skipUrl) {
+				c.Next()
+				return
+			}
+		}
+		if tokenString == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Missing authorization header"})
+			c.Abort()
+			return
+		}
+
+		tokenString = tokenString[len("Bearer "):]
+
+		err := verifyToken(tokenString)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			c.Abort()
+			return
+		}
+
+		// If token is valid, proceed with the request
+		c.Next()
 	}
-	tokenString = tokenString[len("Bearer "):]
-
-	err := verifyToken(tokenString)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		fmt.Fprint(w, "Invalid token")
-		return false
-	}
-
-	fmt.Fprint(w, "Welcome to the the protected area")
-
-	return true
 }
