@@ -30,7 +30,7 @@ func setupSwagger(r *gin.Engine) {
 // @description This is server for Archivit API.
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
-// @name Authorization: Bearer <token>
+// @name Authorization
 func main() {
 	err := godotenv.Load()
 

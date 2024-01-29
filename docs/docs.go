@@ -162,7 +162,7 @@ const docTemplate = `{
     "securityDefinitions": {
         "ApiKeyAuth": {
             "type": "apiKey",
-            "name": "Authorization: Bearer \u003ctoken\u003e",
+            "name": "Authorization",
             "in": "header"
         }
     }

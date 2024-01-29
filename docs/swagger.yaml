@@ -99,6 +99,6 @@ paths:
 securityDefinitions:
   ApiKeyAuth:
     in: header
-    name: 'Authorization: Bearer <token>'
+    name: Authorization
     type: apiKey
 swagger: "2.0"

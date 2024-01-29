@@ -13,7 +13,7 @@ env_variables:
   GOOGLE_REDIRECT_URL: https://agile-dev-dot-primeval-span-410215.du.r.appspot.com/auth/google/callback
   GOOGLE_CLIENT_ID: 584965141712-eku96vnto2vr7t4bk584kkf7q4mer4hn.apps.googleusercontent.com
   GOOGLE_CLIENT_SECRET: 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
-  SECRET_KEY: agile_secret_key
+  SECRET_KEY: agile_secret_key_dev
 
 handlers:
   - url: /.*

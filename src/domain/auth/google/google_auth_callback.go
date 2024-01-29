@@ -46,8 +46,6 @@ func GoogleAuthCallback(c *gin.Context) {
 		return
 	}
 
-	fmt.Fprint(c.Writer, string(data))
-
 	var googleUser struct {
 		ID    string `json:"id"`
 		Email string `json:"email"`
@@ -81,5 +79,6 @@ func GoogleAuthCallback(c *gin.Context) {
 		return
 	}
 
+	//fmt.Fprint(c.Writer, string(data))
 	c.JSON(http.StatusOK, gin.H{"token": tokenString})
 }
