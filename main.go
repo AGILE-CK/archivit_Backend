@@ -6,11 +6,13 @@ import (
 	"archivit_Backend/src/domain/auth"
 	"archivit_Backend/src/domain/auth/google"
 	"archivit_Backend/src/domain/ping"
+	"cloud.google.com/go/storage"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"golang.org/x/net/context"
 	"log"
 	"net/http"
 	"os"
@@ -68,6 +70,36 @@ func main() {
 
 	router.POST("/auth/signup", auth.RegisterHandler)
 	router.POST("/auth/login", auth.LoginHandler)
+
+	ctx := context.Background()
+
+	// Sets your Google Cloud Platform project ID.
+	//projectID := "primeval-span-410215"
+
+	// Creates a client.
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+
+	// Sets the name for the new bucket.
+	bucketName := "primeval-span-410215.appspot.com"
+
+	// Creates a Bucket instance.
+	bucket := client.Bucket(bucketName)
+
+	//// Creates the new bucket.
+	//
+	//if err := bucket.Create(ctx, projectID, nil); err != nil {
+	//	log.Fatalf("Failed to create bucket: %v", err)
+	//}
+
+	// write a new file in bucket
+	wc := bucket.Object("testfile").NewWriter(ctx)
+	wc.ContentType = "text/plain"
+	wc.ACL = []storage.ACLRule{{Entity: storage.AllUsers, Role: storage.RoleReader}}
+	wc.Write([]byte("hello world\n"))
+	wc.Close()
 
 	router.Run(":" + port)
 }
