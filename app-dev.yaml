@@ -14,6 +14,7 @@ env_variables:
   GOOGLE_CLIENT_ID: 584965141712-eku96vnto2vr7t4bk584kkf7q4mer4hn.apps.googleusercontent.com
   GOOGLE_CLIENT_SECRET: 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
   SECRET_KEY: agile_secret_key_dev
+  BUCKET_NAME: archivit_bucket
 
 handlers:
   - url: /.*
