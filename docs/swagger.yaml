@@ -1,3 +1,18 @@
+definitions:
+  auth.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  auth.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
 info:
   contact: {}
   description: This is server for Archivit API.
@@ -23,18 +38,12 @@ paths:
       - application/json
       description: login user
       parameters:
-      - description: email
+      - description: request
         in: body
-        name: email
+        name: request
         required: true
         schema:
-          type: string
-      - description: password
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/auth.LoginRequest'
       produces:
       - application/json
       responses:
@@ -53,18 +62,12 @@ paths:
       - application/json
       description: register user
       parameters:
-      - description: email
+      - description: request
         in: body
-        name: email
+        name: request
         required: true
         schema:
-          type: string
-      - description: password
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/auth.RegisterRequest'
       produces:
       - application/json
       responses:
@@ -77,6 +80,31 @@ paths:
           schema:
             type: string
       summary: register user
+  /file/delete:
+    delete:
+      consumes:
+      - multipart/form-data
+      description: delete file
+      parameters:
+      - description: file txt and m4a
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: File deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid JWT
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: delete file
   /ping:
     get:
       consumes:
@@ -96,6 +124,56 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: ping example
+  /record/create:
+    post:
+      consumes:
+      - multipart/form-data
+      description: create record
+      parameters:
+      - description: file m4a
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Record created successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid JWT
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: create record
+  /text/create:
+    post:
+      consumes:
+      - multipart/form-data
+      description: create file
+      parameters:
+      - description: file txt
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: File created successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid JWT
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: create file
 securityDefinitions:
   ApiKeyAuth:
     in: header
