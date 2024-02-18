@@ -1,0 +1,5 @@
+CREATE DATABASE agile_database;
+CREATE USER 'agile'@'localhost' IDENTIFIED BY 'agile';
+GRANT ALL PRIVILEGES ON *.* TO 'agile'@'%' WITH GRANT OPTION;
+# GRANT ALL PRIVILEGES ON *.* TO 'agile'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;

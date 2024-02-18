@@ -31,7 +31,7 @@ func (ds *DataSource) MakeDataSource() *gorm.DB {
 		var err error
 
 		if os.Getenv("PROFILE") == "local" {
-			dataSourceInstance, err = gorm.Open("mysql", ds.Username+":"+ds.Password+"@tcp("+ds.Host+":"+ds.Port+")/"+ds.Database)
+			dataSourceInstance, err = gorm.Open("mysql", ds.Username+":"+ds.Password+"@tcp("+ds.Host+":"+ds.Port+")/"+ds.Database+"?parseTime=true")
 		} else {
 			dataSourceInstance, err = gorm.Open("mysql", ds.Username+":"+ds.Password+"@unix(/cloudsql/"+ds.Host+")/"+ds.Database+"?parseTime=true")
 		}
@@ -46,4 +46,10 @@ func (ds *DataSource) MakeDataSource() *gorm.DB {
 
 func GetDataSource() *gorm.DB {
 	return dataSourceInstance
+}
+
+func InitAndGetDataSource() *gorm.DB {
+	ds := &DataSource{}
+	ds.MakeDataSource()
+	return GetDataSource()
 }
