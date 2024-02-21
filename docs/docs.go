@@ -149,6 +149,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/file/download/all": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "download all files",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "download all files",
+                "responses": {
+                    "200": {
+                        "description": "All files downloaded successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid JWT",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/ping": {
             "get": {
                 "security": [

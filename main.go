@@ -5,17 +5,19 @@ import (
 	"archivit_Backend/src/db"
 	"archivit_Backend/src/domain/auth"
 	"archivit_Backend/src/domain/auth/google"
+	"archivit_Backend/src/domain/file"
 	"archivit_Backend/src/domain/ping"
 	"archivit_Backend/src/domain/record"
 	"archivit_Backend/src/domain/text"
+	"log"
+	"net/http"
+	"os"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"log"
-	"net/http"
-	"os"
 )
 
 func setupSwagger(r *gin.Engine) {
@@ -69,12 +71,14 @@ func main() {
 	router.GET("/auth/google/callback", google.GoogleAuthCallback)
 
 	router.POST("/text/create", text.CreateFile)
-	router.DELETE("/file/delete", text.DeleteFile)
+	router.DELETE("/file/delete", file.DeleteFile)
 
 	router.POST("/record/create", record.CreateRecord)
 
 	router.POST("/auth/signup", auth.RegisterHandler)
 	router.POST("/auth/login", auth.LoginHandler)
+
+	router.GET("/file/download/all", file.DownloadAllFiles)
 
 	router.Run(":" + port)
 }

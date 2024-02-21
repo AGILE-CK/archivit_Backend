@@ -105,6 +105,23 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: delete file
+  /file/download/all:
+    get:
+      description: download all files
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: All files downloaded successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid JWT
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: download all files
   /ping:
     get:
       consumes:

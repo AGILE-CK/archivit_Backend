@@ -33,5 +33,3 @@ go.work
 app-dev.yaml
 
 
-# local env
-.env
